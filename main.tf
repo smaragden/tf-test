@@ -12,9 +12,19 @@ terraform {
 module "repositories" {
     source = "./modules/repositories"
     default_topics = ["test"]
+    default_branch_protections = {
+      main = {
+          required_linear_history = true
+      }
+    }
     repository = [{
         name = "terraform_test_01",
-        topics = ["test-01"]
+        topics = ["test-01"],
+        branch_protections = {
+          dev = {
+            required_linear_history = true
+          }
+        }
     },
     {
         name = "terraform_test_02"
@@ -23,6 +33,6 @@ module "repositories" {
 }
 
 
-output "repos" {
-  value = module.repositories.repositories
+output "branch_protections" {
+  value = module.repositories.branch_protections
 }
